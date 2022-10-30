@@ -2,6 +2,7 @@ local addonName, addonTable = ...
 
 function addonTable.nameplateStyle(self)
     self:SetSize(200, 50)
+    self:SetPoint("CENTER")
     addonTable.elementsFactory.makeBorder(self)
     addonTable.elementsFactory.makeHealthBar(self, 42)
     addonTable.elementsFactory.makePowerBar(self, 8)
