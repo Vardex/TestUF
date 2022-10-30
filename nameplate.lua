@@ -14,6 +14,6 @@ function addonTable.nameplateStyle(self)
     addonTable.elementsFactory.makeNameText(self, "LEFT", 5, 0, 8)
     addonTable.elementsFactory.makeHealthFullText(self, "RIGHT", -5, 0, 8)
     addonTable.elementsFactory.makeCastBar(self)
-    addonTable.elementsFactory.makeAuras(self)
+    addonTable.elementsFactory.makeAuras(self, true)
 end
 

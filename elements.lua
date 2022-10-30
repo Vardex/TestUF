@@ -267,7 +267,7 @@ function addonTable.elementsFactory.makeCastBar(self)
     self.Castbar = castbar
 end
 
-function addonTable.elementsFactory.makeAuras(self)
+function addonTable.elementsFactory.makeAuras(self, disableTooltip)
     -- Position and size
     local auras = CreateFrame('Frame', nil, self)
     auras:SetPoint('BOTTOM', self, 'TOP')
@@ -275,6 +275,15 @@ function addonTable.elementsFactory.makeAuras(self)
     auras:SetPoint('RIGHT')
     auras:SetHeight(32)
     -- Register with oUF
+    auras.debuffFilter = "HARMFUL|PLAYER"
+    if disableTooltip then
+        auras.disableMouse = true
+        auras.PostCreateButton = function(_, button)
+            button.UpdateTooltip = nil
+            button:SetScript('OnEnter', nil)
+            button:SetScript('OnLeave', nil)
+        end
+    end
     auras.size = 24
     self.Auras = auras
 end
