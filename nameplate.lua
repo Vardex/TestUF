@@ -15,7 +15,9 @@ function addonTable.nameplateStyle(self)
     self:SetSize(width, height)
     self:SetPoint("CENTER")
     local scale = UIParent:GetEffectiveScale()
-    C_NamePlate.SetNamePlateEnemySize(math.floor(width * scale), math.floor(height * scale))
+    if not InCombatLockdown() then
+        C_NamePlate.SetNamePlateEnemySize(math.floor(width * scale), math.floor(height * scale))
+    end
     self:SetScale(scale)
     addonTable.elementsFactory.makeBorder(self, true)
     addonTable.elementsFactory.makeHealthBar(self)
