@@ -210,6 +210,12 @@ local colorInterruptible = function(self, unit)
     end
 end
 
+local function customTimeText(self, duration)
+    if self.Time then
+        self.Time:SetText(("%.1f"):format(self.channeling and duration or self.max - duration))
+    end
+end
+
 function addonTable.elementsFactory.makeCastBar(self)
     -- Position and size
     local castbar = CreateFrame('StatusBar', nil, self)
@@ -261,6 +267,7 @@ function addonTable.elementsFactory.makeCastBar(self)
     castbar.bg = background
     -- castbar.Spark = spark
     castbar.Time = time
+    castbar.CustomTimeText = customTimeText
     castbar.Text = text
     castbar.Icon = icon
     -- castbar.Shield = shield
