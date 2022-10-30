@@ -25,5 +25,6 @@ function addonTable.nameplateStyle(self)
     addonTable.elementsFactory.makeHealthFullText(self, "RIGHT", -5, 0)
     addonTable.elementsFactory.makeCastBar(self)
     addonTable.elementsFactory.makeAuras(self, true)
+    addonTable.elementsFactory.makeThreatIndicator(self, true)
 end
 

@@ -167,11 +167,14 @@ function addonTable.elementsFactory.makeSummonIndicator(self)
     self.SummonIndicator = summonIndicator
 end
 
-function addonTable.elementsFactory.makeThreatIndicator(self)
+function addonTable.elementsFactory.makeThreatIndicator(self, player)
     -- Position and size
     local threatIndicator = self.Health:CreateTexture(nil, 'OVERLAY')
     threatIndicator:SetSize(16, 16)
     threatIndicator:SetPoint('BOTTOM', self.Health)
+    if player then
+        threatIndicator.feedbackUnit = "player"
+    end
     -- Register it with oUF
     self.ThreatIndicator = threatIndicator
 end
