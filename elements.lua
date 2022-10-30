@@ -176,29 +176,6 @@ function addonTable.elementsFactory.makeThreatIndicator(self)
     self.ThreatIndicator = threatIndicator
 end
 
-function addonTable.elementsFactory.makeBackdrop(self)
-    local backdrop = CreateFrame("Frame", nil, self, "BackdropTemplate");
-    backdrop:SetPoint("TOPLEFT", -2, 2)
-    backdrop:SetPoint("BOTTOMRIGHT", 2, -2)
-    backdrop:SetBackdrop({
-        edgeFile = 'Interface/BUTTONS/WHITE8X8',
-        tileEdge = true,
-        edgeSize = 3,
-    })
-    backdrop:SetBackdropColor(1, 1, 1, 1)
-    backdrop:SetFrameLevel(5)
-    backdrop:Hide()
-    backdrop:RegisterEvent("PLAYER_TARGET_CHANGED")
-    backdrop:SetScript("OnEvent", function()
-        if UnitIsUnit(self.unit, "target") then
-            backdrop:Show()
-        else
-            backdrop:Hide()
-        end
-    end)
-
-end
-
 function addonTable.elementsFactory.makePhaseIndicator(self)
     -- Position and size
     local phaseIndicator = CreateFrame('Frame', nil, self.Health)
