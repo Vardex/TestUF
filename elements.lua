@@ -211,7 +211,7 @@ function addonTable.elementsFactory.makeCastBar(self)
     -- Position and size
     local castbar = CreateFrame('StatusBar', nil, self)
     castbar:SetHeight(20)
-    castbar:SetPoint('BOTTOM', 0, -25)
+    castbar:SetPoint('TOP', self, 'BOTTOM')
     castbar:SetPoint('LEFT', 20, 0)
     castbar:SetPoint('RIGHT')
     castbar:SetStatusBarTexture([[Interface\AddOns\WeakAuras\Media\Textures\Statusbar_Clean]])
@@ -220,6 +220,17 @@ function addonTable.elementsFactory.makeCastBar(self)
     background:SetAllPoints(castbar)
     background:SetTexture([[Interface\AddOns\WeakAuras\Media\Textures\Statusbar_Clean]])
     background:SetColorTexture(20/255, 20/255, 20/255)
+    -- Add a border
+    local backdrop = CreateFrame("Frame", nil, castbar, "BackdropTemplate");
+    backdrop:SetPoint('TOPLEFT', -20, 0)
+    backdrop:SetPoint('BOTTOMRIGHT')
+    backdrop:SetBackdrop({
+        edgeFile = 'Interface/BUTTONS/WHITE8X8',
+        tileEdge = true,
+        edgeSize = 1,
+    })
+    backdrop:SetBackdropBorderColor(0, 0, 0)
+    backdrop:SetFrameLevel(5)
     -- Add a spark
     -- local spark = castbar:CreateTexture(nil, 'OVERLAY')
     -- spark:SetSize(20, 20)
