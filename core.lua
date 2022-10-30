@@ -45,5 +45,5 @@ oUF:Factory(function(self)
     party:SetPoint('TOP', UIParent, 'CENTER' , -550, 200)
 
     -- oUF:SpawnNamePlates(prefix, callback, variables)
-    self:SpawnNamePlates()
+    self:SpawnNamePlates(nil, nil, addonTable.nameplateCVars)
 end)
