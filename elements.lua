@@ -195,18 +195,29 @@ function addonTable.elementsFactory.makeCombatIndicator(self)
     self.CombatIndicator = combatIndicator
 end
 
-local colorInterruptible = function(self, unit)
+local colorInterruptible = function(self)
     -- Manage interruptible
     if self.notInterruptible then
-        self:SetStatusBarColor(75/255, 75/255, 75/255)
+        self:SetStatusBarColor(75 / 255, 75 / 255, 75 / 255)
     else
-        self:SetStatusBarColor(200/255, 200/255, 0)
+        self:SetStatusBarColor(200 / 255, 200 / 255, 0)
     end
+end
+
+local function onCastFail(self)
+    self:SetStatusBarColor(200 / 255, 0, 0)
+    self.SafeZone:Hide()
 end
 
 local function customTimeText(self, duration)
     if self.Time then
         self.Time:SetText(("%.1f"):format(self.channeling and duration or self.max - duration))
+    end
+end
+
+local function onInterrupt(self, _, _, _, sourceName, _, _, destGUID)
+    if destGUID == UnitGUID(self.unit) and self.Castbar.Time then
+        self.Castbar.Time:SetText(sourceName)
     end
 end
 
@@ -222,7 +233,7 @@ function addonTable.elementsFactory.makeCastBar(self)
     local background = castbar:CreateTexture(nil, 'BACKGROUND')
     background:SetAllPoints(castbar)
     background:SetTexture([[Interface\AddOns\WeakAuras\Media\Textures\Statusbar_Clean]])
-    background:SetColorTexture(20/255, 20/255, 20/255)
+    background:SetColorTexture(20 / 255, 20 / 255, 20 / 255)
     -- Add a border
     local backdrop = CreateFrame("Frame", nil, castbar, "BackdropTemplate");
     backdrop:SetPoint('TOPLEFT', -20, 0)
@@ -259,6 +270,7 @@ function addonTable.elementsFactory.makeCastBar(self)
     -- shield:SetPoint('CENTER', castbar)
     -- Add safezone
     local safeZone = castbar:CreateTexture(nil, 'OVERLAY')
+    self:RegisterCombatEvent("SPELL_INTERRUPT", onInterrupt)
     -- Register it with oUF
     castbar.bg = background
     -- castbar.Spark = spark
@@ -268,6 +280,8 @@ function addonTable.elementsFactory.makeCastBar(self)
     castbar.Icon = icon
     -- castbar.Shield = shield
     castbar.SafeZone = safeZone
+    castbar.timeToHold = 3
+    castbar.PostCastFail = onCastFail
     castbar.PostCastStart = colorInterruptible
     castbar.PostCastInterruptible = colorInterruptible
     self.Castbar = castbar
