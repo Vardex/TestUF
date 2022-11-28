@@ -60,5 +60,5 @@ oUF:Factory(function(self)
     end
 
     -- oUF:SpawnNamePlates(prefix, callback, variables)
-    self:SpawnNamePlates(nil, nil, addonTable.nameplateCVars)
+    self:SpawnNamePlates(nil, addonTable.onNameplatesChange, addonTable.nameplateCVars)
 end)

@@ -18,13 +18,26 @@ function addonTable.nameplateStyle(self)
     if not InCombatLockdown() then
         C_NamePlate.SetNamePlateEnemySize(math.floor(width * scale), math.floor(height * scale))
     end
+
     self:SetScale(scale)
-    addonTable.elementsFactory.makeBorder(self, true)
+    addonTable.elementsFactory.makeBorder(self)
     addonTable.elementsFactory.makeHealthBar(self)
     addonTable.elementsFactory.makeNameText(self, "LEFT", 5, 0)
     addonTable.elementsFactory.makeHealthFullText(self, "RIGHT", -5, 0)
     addonTable.elementsFactory.makeCastBar(self)
     addonTable.elementsFactory.makeAuras(self, true)
     addonTable.elementsFactory.makeThreatIndicator(self, true)
+end
+
+function addonTable.onNameplatesChange()
+    for _, plate in pairs(C_NamePlate.GetNamePlates()) do
+        if UnitIsUnit(plate.unitFrame.unit, "target") then
+            plate.unitFrame.backdrop:SetBackdropBorderColor(1, 1, 1)
+            plate.unitFrame.backdrop:SetFrameLevel(6)
+        else
+            plate.unitFrame.backdrop:SetBackdropBorderColor(0, 0, 0)
+            plate.unitFrame.backdrop:SetFrameLevel(5)
+        end
+    end
 end
 

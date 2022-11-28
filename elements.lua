@@ -419,13 +419,16 @@ function addonTable.elementsFactory.makeBorder(self, select)
     })
     backdrop:SetBackdropBorderColor(0, 0, 0)
     backdrop:SetFrameLevel(5)
+    self.backdrop = backdrop
     if select then
         backdrop:RegisterEvent("PLAYER_TARGET_CHANGED")
         backdrop:SetScript("OnEvent", function()
             if UnitIsUnit(self.unit, "target") then
                 backdrop:SetBackdropBorderColor(1, 1, 1)
+                backdrop:SetFrameLevel(6)
             else
                 backdrop:SetBackdropBorderColor(0, 0, 0)
+                backdrop:SetFrameLevel(5)
             end
         end)
     end
