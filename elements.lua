@@ -125,6 +125,15 @@ function addonTable.elementsFactory.makeLeaderIndicator(self)
     self.LeaderIndicator = leaderIndicator
 end
 
+function addonTable.elementsFactory.makeAssistantIndicator(self)
+    -- Position and size
+    local assistantIndicator = self.Health:CreateTexture(nil, 'OVERLAY')
+    assistantIndicator:SetSize(16, 16)
+    assistantIndicator:SetPoint('TOPLEFT', self.Health, 'TOPLEFT', 2, 2)
+    -- Register it with oUF
+    self.AssistantIndicator = assistantIndicator
+end
+
 function addonTable.elementsFactory.makeRaidTargetIndicator(self)
     -- Position and size
     local raidTargetIndicator = self.Health:CreateTexture(nil, 'OVERLAY')

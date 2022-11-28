@@ -5,7 +5,8 @@ local unitSpecific = {
     target = addonTable.targetStyle,
     targettarget = addonTable.smallufStyle,
     focus = addonTable.smallufStyle,
-    party = addonTable.partyStyle
+    party = addonTable.partyStyle,
+    raid = addonTable.raidStyle
 }
 
 local layout = function(self, unit)
@@ -35,7 +36,7 @@ oUF:Factory(function(self)
     focus:SetPoint('TOPLEFT', player, 'BOTTOMLEFT', 0, 1)
 
     -- oUF:SpawnHeader(overrideName, overrideTemplate, visibility, attributes ...)
-    local party = self:SpawnHeader(nil, nil, 'raid,party,solo',
+    local party = self:SpawnHeader(nil, nil, 'party',
     --      -- http://wowprogramming.com/docs/secure_template/Group_Headers
     --      -- Set header attributes
          'showParty', true,
@@ -43,6 +44,20 @@ oUF:Factory(function(self)
          'yOffset', -5
     )
     party:SetPoint('TOP', UIParent, 'CENTER' , -550, 200)
+
+    local raid = {}
+    for group = 1, NUM_RAID_GROUPS do
+        raid[group] = self:SpawnHeader(nil, nil, 'raid',
+            'showRaid', true,
+            'maxColumns', 5,
+            'unitsPerColumn', 1,
+            'columnAnchorPoint', 'LEFT',
+            'groupFilter', group,
+            'columnSpacing', -1
+        )
+
+        raid[group]:SetPoint('BOTTOMLEFT', UIParent, 5, 250 + (group - 1) * 50)
+    end
 
     -- oUF:SpawnNamePlates(prefix, callback, variables)
     self:SpawnNamePlates(nil, nil, addonTable.nameplateCVars)

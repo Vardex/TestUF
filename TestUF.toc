@@ -10,5 +10,6 @@ player.lua
 target.lua
 smalluf.lua
 party.lua
+raid.lua
 nameplate.lua
 core.lua
