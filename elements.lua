@@ -65,10 +65,8 @@ oUF.Tags.Events['MyLayout:name'] = 'UNIT_NAME_UPDATE'
 
 function addonTable.elementsFactory.makeNameText(self, point, ofsx, ofsy, size)
     -- create the text widget
-    local info = self.Health:CreateFontString(nil, 'OVERLAY', 'GameFontHighlightOutline')
-    if size then
-        info:SetFont("Fonts\\FRIZQT__.TTF", size, "OUTLINE")
-    end
+    local info = self.Health:CreateFontString(nil, 'OVERLAY')
+    info:SetFont("Fonts\\FRIZQT__.TTF", size or 12, "OUTLINE")
     info:SetPoint(point or "CENTER", ofsx or 0, ofsy or 0)
     -- register the tag on the text widget with oUF
     self:Tag(info, '[MyLayout:name]')
@@ -85,10 +83,8 @@ oUF.Tags.Events['MyLayout:hp'] = 'UNIT_HEALTH'
 
 function addonTable.elementsFactory.makeHealthFullText(self, point, ofsx, ofsy, size)
     -- create the text widget
-    local info = self.Health:CreateFontString(nil, 'OVERLAY', 'GameFontHighlightOutline')
-    if size then
-        info:SetFont("Fonts\\FRIZQT__.TTF", size, "OUTLINE")
-    end
+    local info = self.Health:CreateFontString(nil, 'OVERLAY')
+    info:SetFont("Fonts\\FRIZQT__.TTF", size or 12, "OUTLINE")
     info:SetPoint(point or "CENTER", ofsx or 0, ofsy or 0)
     -- register the tag on the text widget with oUF
     self:Tag(info, '[MyLayout:hp]')
@@ -104,10 +100,8 @@ oUF.Tags.Events['MyLayout:perhp'] = 'UNIT_HEALTH'
 
 function addonTable.elementsFactory.makeHealthPerText(self, point, ofsx, ofsy, size)
     -- create the text widget
-    local info = self.Health:CreateFontString(nil, 'OVERLAY', 'GameFontHighlightOutline')
-    if size then
-        info:SetFont("Fonts\\FRIZQT__.TTF", size, "OUTLINE")
-    end
+    local info = self.Health:CreateFontString(nil, 'OVERLAY')
+    info:SetFont("Fonts\\FRIZQT__.TTF", size or 12, "OUTLINE")
     info:SetPoint(point or "CENTER", ofsx or 0, ofsy or 0)
     -- register the tag on the text widget with oUF
     self:Tag(info, '[MyLayout:perhp]')
@@ -246,11 +240,13 @@ function addonTable.elementsFactory.makeCastBar(self)
     -- spark:SetBlendMode('ADD')
     -- spark:SetPoint('CENTER', castbar:GetStatusBarTexture(), 'RIGHT', 0, 0)
     -- Add a timer
-    local time = castbar:CreateFontString(nil, 'OVERLAY', 'GameFontHighlightOutline')
+    local time = castbar:CreateFontString(nil, 'OVERLAY')
+    time:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE")
     time:SetPoint('RIGHT', castbar, -5, 1)
     -- time:SetTextColor(1, 1, 1)
     -- Add spell text
-    local text = castbar:CreateFontString(nil, 'OVERLAY', 'GameFontHighlightOutline')
+    local text = castbar:CreateFontString(nil, 'OVERLAY')
+    text:SetFont("Fonts\\FRIZQT__.TTF", 12, "OUTLINE")
     text:SetPoint('LEFT', castbar, 5, 1)
     -- text:SetTextColor(1, 1, 1)
     -- Add spell icon
