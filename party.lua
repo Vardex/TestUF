@@ -18,6 +18,7 @@ addonTable.partyStyle = function(self)
     addonTable.elementsFactory.makeSummonIndicator(self)
     addonTable.elementsFactory.makeThreatIndicator(self)
     addonTable.elementsFactory.makePhaseIndicator(self)
+    addonTable.elementsFactory.makeDebuff(self)
 
     self.Range = {
         insideAlpha = 1,

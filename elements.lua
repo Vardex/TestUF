@@ -287,25 +287,116 @@ function addonTable.elementsFactory.makeCastBar(self)
     self.Castbar = castbar
 end
 
+local function createButton(element, index)
+    local function UpdateTooltip(self)
+        if (GameTooltip:IsForbidden()) then return end
+
+        if (self.isHarmful) then
+            GameTooltip:SetUnitDebuffByAuraInstanceID(self:GetParent().__owner.unit, self.auraInstanceID)
+        else
+            GameTooltip:SetUnitBuffByAuraInstanceID(self:GetParent().__owner.unit, self.auraInstanceID)
+        end
+    end
+
+    local function onEnter(self)
+        if (GameTooltip:IsForbidden() or not self:IsVisible()) then return end
+
+        -- Avoid parenting GameTooltip to frames with anchoring restrictions,
+        -- otherwise it'll inherit said restrictions which will cause issues with
+        -- its further positioning, clamping, etc
+        GameTooltip:SetOwner(self, self:GetParent().__restricted and 'ANCHOR_CURSOR' or self:GetParent().tooltipAnchor)
+        self:UpdateTooltip()
+    end
+
+    local function onLeave()
+        if (GameTooltip:IsForbidden()) then return end
+
+        GameTooltip:Hide()
+    end
+
+    local button = CreateFrame('Button', element:GetDebugName() .. 'Button' .. index, element)
+
+    local cd = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
+    cd:SetAllPoints()
+    cd:SetReverse(true)
+    cd:SetDrawEdge(false)
+    button.Cooldown = cd
+
+    local icon = button:CreateTexture(nil, 'BORDER')
+    icon:SetAllPoints()
+    button.Icon = icon
+
+    local countFrame = CreateFrame('Frame', nil, button)
+    countFrame:SetAllPoints(button)
+    countFrame:SetFrameLevel(cd:GetFrameLevel() + 1)
+
+    local count = countFrame:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
+    count:SetPoint('BOTTOMRIGHT', countFrame, 'BOTTOMRIGHT', -1, 0)
+    button.Count = count
+
+    local backdrop = CreateFrame("Frame", nil, button, "BackdropTemplate");
+    backdrop:SetPoint("TOPLEFT")
+    backdrop:SetPoint("BOTTOMRIGHT")
+    backdrop:SetBackdrop({
+        edgeFile = 'Interface/BUTTONS/WHITE8X8',
+        tileEdge = true,
+        edgeSize = 1,
+    })
+    backdrop:SetBackdropBorderColor(0, 0, 0)
+    backdrop:SetFrameLevel(10)
+    button.Backdrop = backdrop
+
+    button.UpdateTooltip = UpdateTooltip
+    button:SetScript('OnEnter', onEnter)
+    button:SetScript('OnLeave', onLeave)
+
+    return button
+end
+
+local function onUpdateButton(self, button, unit, data, position)
+    local color = self.__owner.colors.debuff[data.dispelName] or { 0, 0, 0 }
+
+    button.Backdrop:SetBackdropBorderColor(color[1], color[2], color[3])
+end
+
 function addonTable.elementsFactory.makeAuras(self, disableTooltip)
     -- Position and size
     local auras = CreateFrame('Frame', nil, self)
-    auras:SetPoint('BOTTOM', self, 'TOP')
+    auras:SetPoint('BOTTOM', self, 'TOP', 0, 1)
     auras:SetPoint('LEFT')
     auras:SetPoint('RIGHT')
     auras:SetHeight(32)
     -- Register with oUF
+    auras.spacing = 1
     auras.debuffFilter = "HARMFUL|PLAYER"
-    if disableTooltip then
-        auras.disableMouse = true
-        auras.PostCreateButton = function(_, button)
-            button.UpdateTooltip = nil
-            button:SetScript('OnEnter', nil)
-            button:SetScript('OnLeave', nil)
-        end
-    end
+    auras.disableMouse = disableTooltip
+    auras.CreateButton = createButton
+    auras.PostUpdateButton = onUpdateButton
     auras.size = 24
     self.Auras = auras
+end
+
+local function filterDebuff(self, unit, data)
+    local hasCustom, alwaysShowMine, showForMySpec = SpellGetVisibilityInfo(data.spellId, "RAID_INCOMBAT")
+
+    return not hasCustom or hasCustom and showForMySpec
+end
+
+function addonTable.elementsFactory.makeDebuff(self)
+    -- Position and size
+    local debuffs = CreateFrame('Frame', nil, self)
+    debuffs:SetPoint('TOPLEFT', self, 'TOPRIGHT', 1, 0)
+    debuffs:SetPoint('BOTTOMLEFT', self, 'BOTTOMRIGHT', 1, 0)
+    debuffs:SetWidth(203)
+    -- Register with oUF
+    -- debuffs.filter = "RAID"
+    debuffs.spacing = 1
+    debuffs.CreateButton = createButton
+    debuffs.PostUpdateButton = onUpdateButton
+    debuffs.size = 50
+    debuffs.num = 4
+    debuffs.FilterAura = filterDebuff
+    self.Debuffs = debuffs
 end
 
 function addonTable.elementsFactory.makeBorder(self, select)
